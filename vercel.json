@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build:api",
+  "outputDirectory": "api-static",
+  "functions": {
+    "api/*.mjs": {
+      "includeFiles": "src/data/demo-data.json",
+      "maxDuration": 120
+    }
+  },
+  "regions": ["fra1"]
+}
