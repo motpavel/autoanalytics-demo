@@ -222,6 +222,10 @@ code {
   gap: 4px;
 }
 
+.sidebar__label--mobile {
+  display: none;
+}
+
 .sidebar__item {
   position: relative;
   display: flex;
@@ -3622,3 +3626,99 @@ th.num .col-btn {
 .assistant-access-form button { min-height: 42px; padding: 8px 14px; border: 0; border-radius: 8px; background: var(--blue); color: white; }
 .assistant-access-form [role='alert'] { color: #983737; }
 @media (max-width: 650px) { .ask-form input, .assistant-access-form input { font-size: 16px; } }
+
+/* На телефоне разделы доступны большим пальцем; контент и ИИ остаются выше панели. */
+@media (max-width: 1024px) {
+  :root {
+    --mobile-tabbar-height: 68px;
+  }
+
+  html {
+    scroll-padding-bottom: calc(var(--mobile-tabbar-height) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+
+  .sidebar {
+    z-index: auto;
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    /* A filtered ancestor would pin the fixed navigation to the header instead of the viewport. */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .sidebar__nav {
+    position: fixed;
+    z-index: 60;
+    inset-inline: 0;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0;
+    height: calc(var(--mobile-tabbar-height) + env(safe-area-inset-bottom, 0px));
+    padding: 4px max(4px, env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px));
+    border-top: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 -6px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .sidebar__item {
+    width: 100%;
+    min-width: 0;
+    min-height: 56px;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 2px;
+    border-radius: 10px;
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: background-color 150ms ease-out, color 150ms ease-out;
+  }
+
+  .sidebar__item svg {
+    width: 22px;
+    height: 22px;
+    flex: none;
+  }
+
+  .sidebar__item.is-active {
+    background: var(--blue-soft);
+    color: var(--blue-strong);
+    box-shadow: none;
+  }
+
+  .sidebar__item:active {
+    background: var(--blue-soft);
+  }
+
+  .sidebar__item:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: -3px;
+  }
+
+  .sidebar__label--full {
+    display: none;
+  }
+
+  .sidebar__label--mobile {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .main {
+    padding-bottom: calc(96px + var(--mobile-tabbar-height) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .floating-assistant {
+    bottom: calc(var(--mobile-tabbar-height) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+
+  .floating-assistant__window {
+    max-height: min(640px, calc(100dvh - var(--mobile-tabbar-height) - env(safe-area-inset-bottom, 0px) - 32px));
+  }
+}

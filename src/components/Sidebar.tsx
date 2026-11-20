@@ -1,13 +1,13 @@
 import { BarChart3, Bot, CarFront, FileSpreadsheet, Home, UsersRound, Wrench } from "lucide-react";
 import type { DemoData, TabId } from "../lib/types";
 
-const items: Array<{ id: TabId; label: string; icon: typeof Home }> = [
+const items: Array<{ id: TabId; label: string; mobileLabel?: string; icon: typeof Home }> = [
   { id: "overview", label: "Обзор", icon: Home },
   { id: "sales", label: "Продажи", icon: BarChart3 },
   { id: "service", label: "Сервис", icon: Wrench },
   { id: "team", label: "Команда", icon: UsersRound },
-  { id: "clients", label: "Клиенты и авто", icon: CarFront },
-  { id: "ai", label: "ИИ-анализ", icon: Bot },
+  { id: "clients", label: "Клиенты и авто", mobileLabel: "Клиенты", icon: CarFront },
+  { id: "ai", label: "ИИ-анализ", mobileLabel: "ИИ", icon: Bot },
 ];
 
 type SidebarProps = {
@@ -33,13 +33,15 @@ export function Sidebar({ activeTab, data, onTabChange }: SidebarProps) {
           return (
             <button
               className={`sidebar__item ${active ? "is-active" : ""}`}
+              aria-label={item.label}
               aria-current={active ? "page" : undefined}
               key={item.id}
               type="button"
               onClick={() => onTabChange(item.id)}
             >
               <Icon size={18} strokeWidth={2} aria-hidden="true" />
-              <span>{item.label}</span>
+              <span className="sidebar__label--full">{item.label}</span>
+              <span className="sidebar__label--mobile">{item.mobileLabel || item.label}</span>
             </button>
           );
         })}
